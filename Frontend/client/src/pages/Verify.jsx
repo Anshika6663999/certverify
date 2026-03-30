@@ -5,12 +5,30 @@ export default function Verify() {
   const [id, setId] = useState("");
   const [data, setData] = useState(null);
 
-  const handle = async () => {
+  const handleVerify = async () => {
     try {
       const res = await verifyCert(id);
-      setData(res.data);
+      setData(res); //  backend returns the certificate object directly
     } catch {
-      alert("Not found");
+      alert("Certificate not found");
+    }
+  };
+
+  const handleDownload = async () => {
+    try {
+      const blob = await downloadCert(data.certId); // ✅ get Blob from API
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${data.certId}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("Error downloading certificate:", err);
+      alert("Error downloading certificate");
     }
   };
 
@@ -20,16 +38,21 @@ export default function Verify() {
 
       <input
         className="bg-gray-800 p-2"
-        onChange={(e)=>setId(e.target.value)}
+        placeholder="Enter Certificate ID"
+        value={id}
+        onChange={(e) => setId(e.target.value)}
       />
-      <button className="ml-2 bg-green-500 px-3" onClick={handle}>
+      <button className="ml-2 bg-green-500 px-3" onClick={handleVerify}>
         Verify
       </button>
 
       {data && (
         <div className="mt-4">
           <h2>{data.name}</h2>
-          <button onClick={()=>downloadCert(data.certId)}>
+          <button
+            className="bg-blue-500 px-3 mt-2"
+            onClick={handleDownload}
+          >
             Download
           </button>
         </div>
