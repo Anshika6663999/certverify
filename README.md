@@ -1,31 +1,18 @@
-# Certificate_verify
-That's certificate verification system. 
-# Project Structure :
+# CertVerify
 
-          certverify-fullstack/
-│
-├── server/
-│   ├── config/db.js
-│   ├── controllers/certificateController.js
-│   ├── models/Certificate.js
-│   ├── routes/certificateRoutes.js
-│   ├── utils/generatePDF.js
-│   ├── .env
-│   ├── server.js
-│   ├── package.json
-│
-├── client/
-│   ├── index.html   
-│   ├── vite.config.js 
-│   ├── tailwind.config.js
-│   ├── package.json
-│   ├── src/
-│   │   ├── main.jsx
-│   │   ├── App.jsx
-│   │   ├── index.css
-│   │   ├── api/api.js
-│   │   ├── layout/
-│   │   └── pages/
-│
-├── README.md
-└── .gitignore  
+A simple certificate verification system.
+
+## Run Backend
+cd server  
+npm install  
+node server.js  
+
+## Run Frontend
+cd client  
+npm install  
+npm run dev  
+
+## Features
+- Create certificates
+- Verify certificates
+- Download PDF
