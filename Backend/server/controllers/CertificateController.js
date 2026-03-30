@@ -12,14 +12,14 @@ export const getCertificates = async (req, res) => {
   }
 };
 
-//  Create new certificate
+// Create new certificate
 export const createCert = async (req, res) => {
   try {
     const cert = await Certificate.create(req.body);
-    res.json(cert);
+    res.status(201).json(cert);
   } catch (err) {
     console.error("Error creating certificate:", err);
-    res.status(400).json({ msg: "Error creating certificate" });
+    res.status(400).json({ msg: "Error creating certificate", error: err.message });
   }
 };
 
@@ -35,8 +35,14 @@ export const verifyCert = async (req, res) => {
   }
 };
 
-//  Download certificate by certId
+// Download certificate by certId
 export const downloadCert = async (req, res) => {
   try {
     const cert = await Certificate.findOne({ certId: req.params.id });
-    if (!cert) return res.status(404).json({ msg: "Not
+    if (!cert) return res.status(404).json({ msg: "Not found" });
+    generatePDF(res, cert); // stream PDF to response
+  } catch (err) {
+    console.error("Error downloading certificate:", err);
+    res.status(500).json({ msg: "Error downloading certificate" });
+  }
+};
